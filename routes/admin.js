@@ -11,6 +11,8 @@ router.get('/fetchProducts',TokenAuthorization, AdminControl.fetchAllProducts);
 
 router.get('/getProduct/:id',TokenAuthorization, AdminControl.getProductById);
 
+router.post('/postEditProduct',TokenAuthorization, AdminControl.postEditProduct);
+
 router.delete('/deleteProduct/:id',TokenAuthorization, AdminControl.deleteProduct);
 module.exports=router;
 

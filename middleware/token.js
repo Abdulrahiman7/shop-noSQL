@@ -6,9 +6,9 @@ exports.TokenAuthorization=async (req, res, next)=>{
         const token=req.headers.authorization;
         const key=process.env.JWT_SECRET_KEY;
         const auth=jwt.verify(token, key);
-        const user=await User.findUser(auth);
+        const user=await User.findOne({email:auth});
         if (user) {
-            req.user = new User(user.name, user.email, null, null, user.cart, user._id);
+            req.user = user;
             return next();
         } else {
             return res.status(401).json({ message: 'Unauthorized' });

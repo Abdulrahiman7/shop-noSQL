@@ -5,8 +5,12 @@ const  Product  = require("../model/product");
 exports.createProduct= async (req, res, next)=>{
     try{
         let {title, price, description, imageUrl, id}= req.body;
-        if(id === "") id=null;
-            const product=new Product(title, +price, description, imageUrl, id);
+        
+            const product=new Product({
+                title:title, 
+                price:+price, 
+                description:description, 
+                imageUrl:imageUrl});
             await product.save();
             res.status(200).json(product);
     }catch(err)
@@ -19,7 +23,7 @@ exports.createProduct= async (req, res, next)=>{
 exports.deleteProduct=async (req, res, next)=>{
     try{
         const id= req.params.id;
-        const productDeletion=await Product.deleteProduct(id);
+        const productDeletion=await Product.findByIdAndDelete(id);
         res.status(200).json({deletedProduct:id})
     }catch(err)
     {
@@ -30,7 +34,7 @@ exports.deleteProduct=async (req, res, next)=>{
 exports.fetchAllProducts=async (req, res, next)=>{
     try{
 
-        const products=await Product.getAllProducts();
+        const products=await Product.find();
         res.status(200).json(products);
         
     }catch(err)
@@ -42,10 +46,28 @@ exports.fetchAllProducts=async (req, res, next)=>{
 exports.getProductById=async (req, res, next)=>{
     try{
         const userId= req.params.id;
-        const product=Product.getProductById()
+        const product=await Product.findById(userId);
+        console.log(product);
         res.status(200).json(product);
     }catch(err)
     {
         res.status(500).json({message: 'internal sever Error'});
+    }
+}
+
+exports.postEditProduct=async (req, res, next)=>{
+    try{
+        let {title, price, description, imageUrl, id}= req.body;
+            const product=await Product.findById(id);
+            product.title=title;
+            product.price=price;
+            product.description=description;
+            product.imageUrl=imageUrl;
+            await product.save();
+            res.status(200).json(product);
+    }catch(err)
+    {
+        console.log(err);
+        res.status(500).json({message: 'Internal sever Error'});
     }
 }

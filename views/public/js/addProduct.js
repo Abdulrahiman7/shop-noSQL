@@ -2,6 +2,12 @@ const headers={
     'Authorization':localStorage.getItem('shops_token')
 }
 
+function getQueryParams() {
+    const params = new URLSearchParams(window.location.search);
+    return {
+        id: params.get('id')
+    };
+}
 
 const form=document.getElementById('form');
 form.addEventListener('submit',addProduct);
@@ -13,13 +19,21 @@ async function addProduct(e)
     const price=document.getElementById('price').value;
     const description=document.getElementById('description').value;
     const imageUrl=document.getElementById('imageUrl').value;
-    const id=document.getElementById('id').value;
+
 
     const newProduct={
-        title, price, description, imageUrl, id
+        title, price, description, imageUrl
     };
-
-    const addProduct=await axios.post('http://localhost:3000/addProduct',newProduct,{headers});
+    const {id} = getQueryParams();
+    let addProduct;
+    if(id)
+    {
+        newProduct.id= id;
+         addProduct=await axios.post('http://localhost:3000/postEditProduct',newProduct,{headers});
+    }else{
+         addProduct=await axios.post('http://localhost:3000/addProduct',newProduct,{headers});
+    }
+    
     if(addProduct.status===200)
     {
         window.location.href='./admin.html';
@@ -33,23 +47,17 @@ async function addProduct(e)
 
 document.addEventListener('DOMContentLoaded',async ()=>{
     try{
-        function getQueryParams() {
-            const params = new URLSearchParams(window.location.search);
-            return {
-                id: params.get('id')
-            };
-        }
         const {id}=getQueryParams();
     if(!id) return;
     else 
     {
         const existingProduct= await axios.get(`http://localhost:3000/getProduct/${id}`,{headers});
 
-        document.getElementById('title').value=existingProduct.title;
-        document.getElementById('price').value=existingProduct.price;
-        document.getElementById('description').value=existingProduct.description;
-        document.getElementById('imageUrl').value=existingProduct.imageUrl;
-        document.getElementById('id').value=existingProduct.id;
+        document.getElementById('title').value=existingProduct.data.title;
+        document.getElementById('price').value=existingProduct.data.price;
+        document.getElementById('description').value=existingProduct.data.description;
+        document.getElementById('imageUrl').value=existingProduct.data.imageUrl;
+      
 
     }
     }catch(err)

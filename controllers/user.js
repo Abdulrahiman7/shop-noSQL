@@ -7,7 +7,13 @@ exports.newUser=async (req, res, next)=>{
 try{
     console.log('entered the new user');
     const { name, email, password, number}= req.body;
-    const checkExistingUser=await User.findUser(email);
+    const checkExistingUser=await User.findOne(
+        {
+            $or:[
+                {email: email} ,
+                {number: number}
+            ]
+        });
     
     if(checkExistingUser !== null)
     {
@@ -18,7 +24,11 @@ try{
         {
             res.status(500).json({message: 'internal server error'});
         }else{
-            const user=new User(name, email, hash, number);
+            const user=new User({
+                name:name, 
+                email:email, 
+                password:hash, 
+                number:number});
         await user.save();
         res.status(200).json(user);
         }
@@ -35,7 +45,7 @@ try{
 exports.userLogin=async (req, res, next)=>{
     try{
         const {email, password}=req.body;
-        const isExistingUser=await User.findUser(email);
+        const isExistingUser=await User.findOne({email:email});
         if(isExistingUser)
         {
             const matchPassword=compare(password,isExistingUser.password)
