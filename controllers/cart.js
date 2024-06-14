@@ -4,18 +4,9 @@ const User=require('../model/user');
 
 exports.getCartItems= async (req, res, next)=>{
     try{
-        const cartItemsId=req.user.cart.items;
-        const cartItems=[];
-        if(cartItemsId.length)
-        {
-            for (const item of cartItemsId) {
-                const product=await Product.getProductById(item.id);
-                product.quantity=item.quantity;
-                cartItems.push(product);
-            };
-        }
-        
-        res.status(200).json({cartItems});
+        const cart=await req.user.populate('cart.items.productId');
+        const updatedCartItems=cart.cart.items;
+        res.status(200).json({updatedCartItems});
     }catch(err)
     {
         console.log(err);
@@ -26,10 +17,7 @@ exports.getCartItems= async (req, res, next)=>{
 exports.addToCart= async (req, res, next)=>{
     try{
         let prodId=req.body.id;
-
-
-        const product=await Product.getProductById(new ObjectId(`${prodId}`));
-        const addProduct=await req.user.addToCart(product);
+        const addProduct=await req.user.addToCart(prodId);
         res.status(200).json();
 
     }catch(err)
@@ -41,10 +29,9 @@ exports.addToCart= async (req, res, next)=>{
 exports.changeQuantity= async (req, res, next)=>{
     try{
         const {id, quantity}=req.body;
-
-        const product=await Product.getProductById(new ObjectId(`${id}`));
-    const addProduct=await req.user.changeProductQuantity(product, quantity);
+        const updateCart=req.user.changeCartItemQuantity(id, quantity);
         res.status(200).json();
+        
 
     }catch(err)
     {

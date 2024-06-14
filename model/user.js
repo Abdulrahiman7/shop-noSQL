@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-
 const Schema=mongoose.Schema;
 
 const userSchema=new Schema({
@@ -45,6 +44,52 @@ const userSchema=new Schema({
         
     }
 });
+
+userSchema.methods.addToCart= async function(prodId)
+{
+    try{
+         
+          const existingCartProductIndex=this.cart.items.findIndex(cp=>{
+              return cp.id.toString()===prodId.toString();
+           });
+          
+           if(existingCartProductIndex !== -1)
+           {
+               return;
+           }else{
+               this.cart.items.push({productId:prodId, quantity:1});
+           }
+           const updatedCart={items:[...this.cart.items]};
+           this.cart=updatedCart;
+           this.save();
+       }catch(err)
+       {
+           console.log(err);
+       }
+}
+
+userSchema.methods.changeCartItemQuantity=async function(id, quantity)
+{
+    try{
+    const cartItemIndex=this.cart.items.findIndex(item=> item.productId.toString()===id);
+    if(cartItemIndex !== -1)
+    {
+    if( quantity === -1 || quantity=== 1)
+    {
+        this.cart.items[cartItemIndex].quantity += quantity;
+    }
+    if(quantity === 0 ||  this.cart.items[cartItemIndex].quantity <= 0)
+    {
+        const deleteCartItem=this.cart.items.splice(cartItemIndex, 1);
+    }
+    await this.save();
+    } 
+    return ;
+}catch(err)
+{
+    console.log(err);
+}  
+}
 
 module.exports= mongoose.model('User',userSchema);
 

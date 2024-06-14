@@ -25,7 +25,7 @@ function displayCartItems(id, title, price, imageUrl, quantity)
 
     const div1=document.createElement('div');
     div1.setAttribute('class','priceText');
-    const textPrice=document.createTextNode(`price:  ${price.toString()}`);
+    const textPrice=document.createTextNode(`price:  ${price}`);
     div1.appendChild(textPrice);
     
     li.appendChild(div)
@@ -72,16 +72,16 @@ document.addEventListener('DOMContentLoaded',async ()=>{
     const cart=await axios.get('http://localhost:3000/getCartItems',{headers});
     if(cart.status==200)
     {
-        let cartItems=cart.data.cartItems;
+        let cartItems=cart.data.updatedCartItems;
         let totalPrice=0;
         const totalPriceDiv=document.getElementById('totalPrice');
         let totalPriceText;
         if(cartItems.length)
         {
             cartItems.forEach(item => {
-                totalPrice += +item.price* item.quantity;
+                totalPrice += +item.productId.price* item.quantity;
                 
-                displayCartItems(item._id, item.title, item.price,item.imageUrl, item.quantity);
+                displayCartItems(item.productId._id, item.productId.title, item.productId.price,item.productId.imageUrl, item.quantity);
             });
              totalPriceText=document.createTextNode(`Total Price: ${totalPrice}`);
 
