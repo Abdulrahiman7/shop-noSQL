@@ -91,6 +91,17 @@ userSchema.methods.changeCartItemQuantity=async function(id, quantity)
 }  
 }
 
+userSchema.methods.clearCart= async function()
+{
+    try{
+         this.cart={items:[]};
+        return await this.save();
+    }catch(err)
+    {
+        console.log(err);
+    }
+}
+
 module.exports= mongoose.model('User',userSchema);
 
 
