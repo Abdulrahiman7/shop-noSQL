@@ -11,4 +11,6 @@ router.post('/addToCart',TokenAuthorization, CartControl.addToCart);
 router.post('/changeQuantity',TokenAuthorization, CartControl.changeQuantity);
 
 router.get('/createOrder',TokenAuthorization, CartControl.createOrder);
+
+router.get('/getOrders',TokenAuthorization, CartControl.getOrders)
 module.exports= router;

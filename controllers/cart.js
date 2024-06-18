@@ -62,3 +62,13 @@ exports.createOrder=async (req, res, next)=>{
         console.log(err);
     }
 }
+
+exports.getOrders=async (req, res, next)=>{
+    try{
+        const orders=await Order.find({"user.userId":req.user._id});
+        res.status(200).json({orders});
+    }catch(err)
+    {
+        console.log(err);
+    }
+}
