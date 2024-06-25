@@ -7,6 +7,12 @@ require('dotenv').config();
 const UserRoute=require('./routes/user.js');
 const AdminRoute=require('./routes/admin.js');
 const CartRoute=require('./routes/cart.js');
+app.use((req,res)=>{
+  console.log(req.url);
+  const [url, queryParams] = req.url.split('?');
+  res.sendFile(path.join(__dirname, `views/${url}`))
+});
+
 const { default: mongoose } = require('mongoose');
 
 // app.use(cors);
