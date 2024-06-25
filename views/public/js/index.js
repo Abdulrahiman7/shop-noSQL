@@ -39,7 +39,7 @@ function displayProducts(title, price, description, imageUrl, id, ul) {
         try{    
             e.preventDefault();
             const productId=await this.parentElement.id;
-            const updateCart=await axios.post('http://localhost:3000/addToCart',{id: productId},{headers});
+            const updateCart=await axios.post('http://3.87.122.85:3000/addToCart',{id: productId},{headers});
             if(updateCart.status === 200)
             {
                 addToCart.textContent= `Added to Cart`;
@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded',async ()=>{
     try{
         const productsUl=document.createElement('ul');
         productsUl.setAttribute('id','items-ul');
-        const getAllProducts=await axios.get('http://localhost:3000/fetchProducts',{headers});
+        const getAllProducts=await axios.get('http://3.87.122.85:3000/fetchProducts',{headers});
         const productsList=getAllProducts.data;
         if(productsList.length)
         {

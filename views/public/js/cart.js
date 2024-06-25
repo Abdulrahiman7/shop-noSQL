@@ -53,7 +53,7 @@ function displayCartItems(id, title, price, imageUrl, quantity)
     {
         try{    
             
-            const updateCart=await axios.post(`http://localhost:3000/changeQuantity`,{id, quantity},{headers});
+            const updateCart=await axios.post(`http://3.87.122.85:3000/changeQuantity`,{id, quantity},{headers});
             if(updateCart.status === 200)
             {
                 window.location.reload();
@@ -69,7 +69,7 @@ function displayCartItems(id, title, price, imageUrl, quantity)
 }
 
 document.addEventListener('DOMContentLoaded',async ()=>{
-    const cart=await axios.get('http://localhost:3000/getCartItems',{headers});
+    const cart=await axios.get('http://3.87.122.85:3000/getCartItems',{headers});
     if(cart.status==200)
     {
         let cartItems=cart.data.updatedCartItems;
@@ -91,7 +91,7 @@ document.addEventListener('DOMContentLoaded',async ()=>{
 
             createOrder.addEventListener('click',async (e)=>{
                 e.preventDefault();
-                const order=await axios.get('http://localhost:3000/createOrder',{headers});
+                const order=await axios.get('http://3.87.122.85:3000/createOrder',{headers});
                 if(order.status === 200)
                 {
                     

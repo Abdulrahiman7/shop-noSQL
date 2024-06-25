@@ -21,7 +21,7 @@ async function createUser(e)
         number:number
     };
   
-    const x=await axios.post('http://localhost:3000/signup',newUser);
+    const x=await axios.post('http://3.87.122.85:3000/signup',newUser);
     if(x.status==200){
         alert('Successfully signed up');
         window.location.href='login.html';
