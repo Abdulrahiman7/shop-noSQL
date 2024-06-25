@@ -8,11 +8,7 @@ require('dotenv').config();
 const UserRoute=require('./routes/user.js');
 const AdminRoute=require('./routes/admin.js');
 const CartRoute=require('./routes/cart.js');
-app.use((req,res)=>{
-  console.log(req.url);
-  const [url, queryParams] = req.url.split('?');
-  res.sendFile(path.join(__dirname, `views/${url}`))
-});
+
 
 const { default: mongoose } = require('mongoose');
 
@@ -28,7 +24,11 @@ app.use(cors({
   app.use(UserRoute);
   app.use(AdminRoute);
   app.use(CartRoute);
-
+  app.use((req,res)=>{
+    console.log(req.url);
+    const [url, queryParams] = req.url.split('?');
+    res.sendFile(path.join(__dirname, `views/${url}`))
+  });
   async function connectToDatabase(){
   try{
     const dbConnect=mongoose.connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster.cbjfzzk.mongodb.net/shop?retryWrites=true&w=majority&appName=Cluster`);

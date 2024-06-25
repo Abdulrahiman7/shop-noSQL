@@ -48,7 +48,7 @@ exports.userLogin=async (req, res, next)=>{
         const isExistingUser=await User.findOne({email:email});
         if(isExistingUser)
         {
-            const matchPassword=compare(password,isExistingUser.password)
+            const matchPassword=await compare(password,isExistingUser.password)
             if(matchPassword){
                 const token=jwt.sign(email, process.env.JWT_SECRET_KEY );
                 res.status(200).json({token, email});
