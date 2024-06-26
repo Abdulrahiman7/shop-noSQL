@@ -48,7 +48,7 @@ async function displayProducts(title, price, description, imageUrl, id, ul) {
     try{
     e.preventDefault();
     const id=this.parentElement.id;
-    const deleteOperation=await axios.delete(`http://3.87.122.85:3000/deleteProduct/${id}`,{headers});
+    const deleteOperation=await axios.delete(`http://3.87.122.85/deleteProduct/${id}`,{headers});
     if(deleteOperation.status==200)
     {
         ul.removeChild(this.parentElement);
@@ -73,7 +73,7 @@ async function displayProducts(title, price, description, imageUrl, id, ul) {
 document.addEventListener('DOMContentLoaded',async()=>{
     try{
         const productsUl=document.createElement('ul');
-        const response=await axios.get('http://3.87.122.85:3000/fetchProducts',{headers});
+        const response=await axios.get('http://3.87.122.85/fetchProducts',{headers});
         const productsList=response.data;
         if(productsList.length)
         {

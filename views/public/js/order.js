@@ -18,7 +18,7 @@ function displayOrders(title, price, quantity, ul)
 
 document.addEventListener('DOMContentLoaded',async ()=>{
     try{
-        const orderList=await axios.get('http://3.87.122.85:3000/getOrders',{headers});
+        const orderList=await axios.get('http://3.87.122.85/getOrders',{headers});
         const ordersUl=document.getElementById('my-orders');
         const orders=orderList.data.orders;
         for(const order of orders)

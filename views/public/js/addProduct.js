@@ -29,9 +29,9 @@ async function addProduct(e)
     if(id)
     {
         newProduct.id= id;
-         addProduct=await axios.post('http://3.87.122.85:3000/postEditProduct',newProduct,{headers});
+         addProduct=await axios.post('http://3.87.122.85/postEditProduct',newProduct,{headers});
     }else{
-         addProduct=await axios.post('http://3.87.122.85:3000/addProduct',newProduct,{headers});
+         addProduct=await axios.post('http://3.87.122.85/addProduct',newProduct,{headers});
     }
     
     if(addProduct.status===200)
@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded',async ()=>{
     if(!id) return;
     else 
     {
-        const existingProduct= await axios.get(`http://3.87.122.85:3000/getProduct/${id}`,{headers});
+        const existingProduct= await axios.get(`http://3.87.122.85/getProduct/${id}`,{headers});
 
         document.getElementById('title').value=existingProduct.data.title;
         document.getElementById('price').value=existingProduct.data.price;

@@ -19,14 +19,14 @@ async function login(e)
             email:email,
             password:password
         }
-        const login=await axios.post('http://3.87.122.85:3000/login',credentials);
+        const login=await axios.post('http://3.87.122.85/login',credentials);
         if(login.status==200)
         {
             
             localStorage.clear();
             localStorage.setItem('shops_token',login.data.token);
             localStorage.setItem('shops_userName',login.data.email);
-            window.location.href='http://127.0.0.1:5500/views/index.html';
+            window.location.href='../index.html';
         }
 
     }catch(err)

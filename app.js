@@ -17,10 +17,7 @@ app.use(bodyParser.json());
 app.use(express.urlencoded({extended:true}));
 
 
-app.use(cors({
-    origin: "http://127.0.0.1:5500",
-    methods: ['GET','POST','DELETE']
-}));
+app.use(cors());
   app.use(UserRoute);
   app.use(AdminRoute);
   app.use(CartRoute);
